@@ -35,3 +35,23 @@ step_current = input_factory.get_step_current(
 # run the LIF model.
 # Note: As we do not specify any model parameters, the simulation runs with the default values
 (state_monitor,spike_monitor) = LIF.simulate_LIF_neuron(input_current=step_current, simulation_time = 100 * b2.ms)
+
+
+# create a step current with amplitude = I_min
+import matplotlib.pyplot as plt
+
+tup=[]
+#for loop for current in 0nA to 100 nA
+for i in range(0,100,5) :
+  I_min= i*b2.namp #need to find explaination
+  step_current = input_factory.get_step_current(
+      t_start=5, t_end=100, unit_time=b2.ms,
+      amplitude=I_min)  # set I_min to your value
+
+  # run the LIF model.
+  # Note: As we do not specify any model parameters, the simulation runs with the default values
+  (state_monitor,spike_monitor) = LIF.simulate_LIF_neuron(input_current=step_current, simulation_time = 100 * b2.ms)
+  tup.append((spike_monitor.count[0],I_min))
+print(tup)
+plt.plot(*zip(*tup))
+plt.show()
